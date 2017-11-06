@@ -1,0 +1,70 @@
+{% extends 'back/base.html' %}
+{% block content %}
+{% load mptt_tags %}
+{% load fontawesome %}
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{category_name}}</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Liste des documents
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        {% if category_documents %}
+                                            
+                                            {% for item in category_documents %}
+                                                
+                                                
+                                                
+                                                <tr>  
+                                                        
+                                                        <td>
+                                                        
+                                                        {% recursetree item.tags.all %}
+                                                            {{ node.name }}                
+                                                            {% if not node.is_leaf_node %}
+                                                                
+                                                               {{ children }}
+                                                            {% endif %}
+                                                        {% endrecursetree %}
+                                                        
+                                                        </td>
+                                                        
+                                                             
+                                                        <td>{{item.pub_date|date}}</td>
+                                                        <td>{{item.update_date|date}}</td>
+                                                        <td><a href="{% url 'document_download' document_id=item.id %}">{% fontawesome_icon 'file-pdf-o' xlarge=True %}</a> </td>
+                                                        <td><a href="{% url 'document_notes' document_id=item.id%}">{% fontawesome_icon 'sticky-note-o' xlarge=True %}</a></td>
+                                                        <td><a href="{{ item.qrcode.url }}"><img src="{{ item.qrcode.url }}" width="50"></a></td>
+                                                        
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <tr>
+                                                <td>Aucun document pour le moment</td>
+                                            </tr>      
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+            </div>
+
+
+{% endblock %}  

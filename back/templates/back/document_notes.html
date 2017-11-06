@@ -1,0 +1,61 @@
+{% extends 'back/base.html' %}
+{% block content %}
+{% load fontawesome %}
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{{category_name}}</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!-- .panel-heading -->
+                        <div class="panel-body">
+                            <div class="panel-group" id="accordion">
+                                <div class="panel panel-default">
+                                    {% if document_notes %}
+                                        {% regroup document_notes by type as notes_list %}
+                                        {% for notes in notes_list %}
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#{{notes.grouper}}">Notes {{notes.grouper}}</a>
+                                            </h4>
+                                        </div>
+                                        <div id="{{notes.grouper}}" class="panel-collapse collapse {% ifchanged %}in{% endifchanged %}">
+                                            {% for note in notes.list %}
+                                            <div class="panel-body">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        {{ note.name }}
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <p>{{ note.content }}</p>
+                                                    </div>
+                                                    <div class="panel-footer clearfix">
+                                                        <div class="col-md-6">Date d'ajout : {{note.pub_date|date:'d-m-Y H:i' }}</div>
+                                                        <div class="col-md-6 text-right">Dernière mise à jour : {{ note.update_date|date:'d-m-Y H:i' }}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- .panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+
+{% endblock %}  
